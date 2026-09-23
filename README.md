@@ -8,7 +8,7 @@ A smart personal work management assistant built with the **Google Agent Develop
 
 ## 🏗️ System Architecture Diagram
 
-![System Architecture Visual Diagram](assets/architecture_diagram.svg)
+![System Architecture Visual Diagram](assets/architecture_diagram.png)
 
 <details>
 <summary><b>View Interactive Mermaid Flowchart</b></summary>
