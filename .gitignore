@@ -210,5 +210,5 @@ credentials*.json
 
 # Video temp files
 .video_tmp/
-*.webm
+
 
