@@ -8,11 +8,17 @@ A smart personal work management assistant built with the **Google Agent Develop
 
 ## 🏗️ System Architecture Diagram
 
+![System Architecture Visual Diagram](assets/architecture_diagram.svg)
+
+<details>
+<summary><b>View Interactive Mermaid Flowchart</b></summary>
+
 ```mermaid
 flowchart LR
     subgraph Client ["💻 Client Layer"]
         UI["🎨 Web Chat UI<br/>(A2UI Components & Badges)"]
     end
+
 
     subgraph Frontend ["⚡ Frontend Proxy"]
         Server["🚀 FastAPI Server<br/>(main.py)"]
@@ -44,8 +50,10 @@ flowchart LR
     Agent -->|Grounded Search| RAG
     Agent -->|Daily Focus| Quotes
 ```
+</details>
 
 ---
+
 
 
 
