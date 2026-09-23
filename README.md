@@ -6,6 +6,62 @@ A smart personal work management assistant built with the **Google Agent Develop
 
 ---
 
+## 🏗️ System Architecture Diagram
+
+```mermaid
+flowchart TD
+    subgraph ClientLayer ["🖥️ Client Layer (User Interface)"]
+        UI["Web Browser Chat UI<br/>(Dark/Light Mode, Status Badges, Quick Chips)"]
+    end
+
+    subgraph FrontendService ["⚡ Frontend Proxy Service (Cloud Run / Local)"]
+        FastAPI["FastAPI Server<br/>(main.py)"]
+        A2UIParser["A2UI Component Renderer<br/>(index.html)"]
+    end
+
+    subgraph AgentRuntime ["🧠 Google Agent Runtime (Vertex AI Reasoning Engine)"]
+        ADK["ADK Root Agent<br/>(app/agent.py)"]
+        Model["Gemini Model<br/>(gemini-flash-latest)"]
+        A2UICallback["A2UI Callback Manager<br/>(a2ui_callback)"]
+        Sandbox["Agent Engine Sandbox<br/>Code Executor"]
+        Memory["Long-Term Memory Bank<br/>(PreloadMemoryTool & Callbacks)"]
+    end
+
+    subgraph GCPCloudServices ["☁️ Google Cloud Services & External APIs"]
+        Firestore[("🔥 Google Cloud Firestore<br/>('tasks' Collection)")]
+        GCS[("📦 Google Cloud Storage<br/>(HTML Reports & Task Images)")]
+        VertexImage["🎨 Vertex AI Image Model<br/>(gemini-3.1-flash-lite-image)"]
+        RAGCorpus["📚 Grounded RAG Corpus<br/>(Recipe Dataset)"]
+        ZenQuotes["🌐 ZenQuotes API<br/>(Daily Focus Quotes)"]
+    end
+
+    %% User Interaction Flow
+    UI -->|1. User Prompt (HTTP POST /chat)| FastAPI
+    FastAPI -->|2. A2A Protocol Request| ADK
+    
+    %% Agent Processing
+    ADK <-->|3. Instruction & Schema Context| Model
+    ADK -->|4. Structure A2UI Output| A2UICallback
+    ADK <-->|5. Math / Python Execution| Sandbox
+    ADK <-->|6. Persist / Recall Session State| Memory
+
+    %% Tool & Service Execution
+    ADK -->|7. Query / Create / Update Tasks| Firestore
+    ADK -->|8. Upload HTML Dashboard| GCS
+    ADK -->|9. Generate Task Banner Image| VertexImage
+    VertexImage -->|10. Store Public Asset| GCS
+    ADK -->|11. Grounded Search| RAGCorpus
+    ADK -->|12. Fetch Inspiration| ZenQuotes
+
+    %% Response Rendering
+    ADK -->|13. Return Response Payload| FastAPI
+    FastAPI -->|14. Structured A2UI JSON| A2UIParser
+    A2UIParser -->|15. Render Dynamic Cards & Badges| UI
+```
+
+---
+
+
 ## 🌟 Features & Architecture
 
 The **Personal Work Planner Agent** integrates the following core capabilities:
